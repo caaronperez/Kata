@@ -13,18 +13,32 @@ class KataTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
     }
     
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
     
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-    }
+    func aceptCoinsTest() {
+      
+    } //It accept coins and are appended to the default user
+  
+    func rejectCoinsTest() {
+      
+    } //It doesn't accept pennys so it have to be appended to the change
+  
+    func makeChangeTest() {
+      
+    } //Use the greedy alorythm
+  
+    func checkBalanceTest() {
+      
+    } //Check the balance on the user default and sum all
+  
+    func getProductTest() {
+      
+    } //Print the product
+  
     
     func testPerformanceExample() {
         // This is an example of a performance test case.
