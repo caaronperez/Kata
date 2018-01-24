@@ -3,11 +3,11 @@
 //  Kata
 //
 
-enum Currency {
-  case Penny (Int)
-  case Nickel (Int)
-  case Dimme (Int)
-  case Quarter (Int)
+enum Coin: Double {
+  case Penny = 0.01
+  case Nickel = 0.05
+  case Dimme = 0.1
+  case Quarter = 0.25
 }
 
 enum Products: Double {
@@ -16,3 +16,9 @@ enum Products: Double {
   case Candy = 0.65
 }
 
+enum VendingMachineError: Error {
+  case invalidSelection
+  case invalidCoin
+  case insufficientFunds(valueNeeded: Double)
+  case outOfStock
+}

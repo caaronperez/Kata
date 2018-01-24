@@ -19,25 +19,51 @@ class KataTests: XCTestCase {
         super.tearDown()
     }
     
-    func aceptCoinsTest() {
-      
+    func testAceptCoins() throws {
+      let coinInserted = Coin.Dimme
+      try Machine.insertCoin(coin: coinInserted)
+      let lastCoin = Machine.getBalance(key: Machine.balanceKey).last
+      XCTAssertEqual(lastCoin, coinInserted.rawValue)
     } //It accept coins and are appended to the default user
   
-    func rejectCoinsTest() {
+    func testRejectCoins() {
+      let coinInserted = Coin.Dimme
+      XCTAssertThrowsError(try Machine.insertCoin(coin: coinInserted)) { error in
+        guard case VendingMachineError.invalidCoin = error else {
+          return XCTFail()
+        }
+      }
       
     } //It doesn't accept pennys so it have to be appended to the change
   
-    func makeChangeTest() {
-      
-    } //Use the greedy alorythm
+    func testThrowChange() throws{
+      let change = 2.0
+      XCTAssertThrowsError(try Machine.makeChange(value: change)) { error in
+        guard case VendingMachineError.insufficientFunds(let value) = error else {
+          return XCTFail()
+        }
+        XCTAssertEqual(value, change)
+      }
+    } //Calculate the change with the minimum coins
   
-    func checkBalanceTest() {
-      
+    func testThrowCompleteChange() throws {
+      //let changeRequired = Machine.checkBalance(key: Machine.balanceKey)
+      let changeRequired = 0.0
+      let change = try Machine.makeChange(value: changeRequired)
+      let totalChange = change.reduce(0, {$0 + $1})
+      XCTAssertEqual(totalChange, changeRequired)
+    }
+  
+    func testCheckBalance() {
+      let balance = Machine.checkBalance(key: Machine.balanceKey)
+      let stack = Machine.checkBalance(key: Machine.stackKey)
+      XCTAssert(balance != stack)
     } //Check the balance on the user default and sum all
   
-    func getProductTest() {
+    func testGetProduct() {
       
     } //Print the product
+  
   
     
     func testPerformanceExample() {

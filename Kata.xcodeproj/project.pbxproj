@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BB943F772016923800E7B4FF /* Coin.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB943F762016923800E7B4FF /* Coin.swift */; };
+		BB943F792017E78900E7B4FF /* Machine.swift in Sources */ = {isa = PBXBuildFile; fileRef = BB943F782017E78900E7B4FF /* Machine.swift */; };
 		BBE7A7F620166DC500AABA01 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE7A7F520166DC500AABA01 /* AppDelegate.swift */; };
 		BBE7A7F820166DC500AABA01 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBE7A7F720166DC500AABA01 /* ViewController.swift */; };
 		BBE7A7FB20166DC500AABA01 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BBE7A7F920166DC500AABA01 /* Main.storyboard */; };
@@ -36,6 +37,7 @@
 
 /* Begin PBXFileReference section */
 		BB943F762016923800E7B4FF /* Coin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coin.swift; sourceTree = "<group>"; };
+		BB943F782017E78900E7B4FF /* Machine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Machine.swift; sourceTree = "<group>"; };
 		BBE7A7F220166DC500AABA01 /* Kata.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kata.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BBE7A7F520166DC500AABA01 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BBE7A7F720166DC500AABA01 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -96,6 +98,7 @@
 			isa = PBXGroup;
 			children = (
 				BB943F762016923800E7B4FF /* Coin.swift */,
+				BB943F782017E78900E7B4FF /* Machine.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -288,6 +291,7 @@
 			files = (
 				BB943F772016923800E7B4FF /* Coin.swift in Sources */,
 				BBE7A7F820166DC500AABA01 /* ViewController.swift in Sources */,
+				BB943F792017E78900E7B4FF /* Machine.swift in Sources */,
 				BBE7A7F620166DC500AABA01 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
