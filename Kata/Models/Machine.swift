@@ -82,21 +82,6 @@ struct Machine {
     }
   }
   
-  static func didPressProduct() throws{
-    if try giveProduct(product: .Coke) {
-      let newBalance = getBalance(key: Machine.balanceKey) - Product.Coke.rawValue
-      stack.set(newBalance, forKey: balanceKey)
-      if var newTray: [String: Any] = stack.object(forKey: trayKey) as? [String: Any] {
-        newTray["Coke"] = 1
-        stack.set(newTray, forKey: trayKey)
-      } else {
-        var newTray: [String: Any] = [:]
-        newTray["Coke"] = 1
-        stack.set(newTray, forKey: trayKey)
-      }
-    }
-  }
-  
   static func getCoins() throws{
     if var newTray: [String: Any] = stack.object(forKey: trayKey) as? [String: Any] {
       if var changeTray = newTray["Change"] as? [Double] {
@@ -130,8 +115,5 @@ struct Machine {
       throw VendingMachineError.insufficientFunds(valueNeeded: product.rawValue)
     }
   }
-  
-  
-  
   
 }

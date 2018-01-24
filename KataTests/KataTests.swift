@@ -83,7 +83,6 @@ class KataTests: XCTestCase {
       } catch {
         XCTFail("Unknowed error")
       }
-      
     }
   
     func testCheckStock() {
