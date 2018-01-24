@@ -10,7 +10,7 @@ enum Coin: Double {
   case Quarter = 0.25
 }
 
-enum Products: Double {
+enum Product: Double {
   case Coke = 1.0
   case Chips = 0.5
   case Candy = 0.65
