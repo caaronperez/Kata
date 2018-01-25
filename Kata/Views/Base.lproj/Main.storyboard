@@ -19,7 +19,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H3H-hr-oZK">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H3H-hr-oZK">
                                 <rect key="frame" x="40" y="68" width="235" height="51"/>
                                 <color key="backgroundColor" red="1" green="0.67247178819444442" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -27,21 +27,15 @@
                                     <constraint firstAttribute="width" secondItem="H3H-hr-oZK" secondAttribute="height" multiplier="235:51" id="T4I-GW-Lt3"/>
                                     <constraint firstAttribute="height" constant="51" id="lkP-Be-DZS"/>
                                 </constraints>
-                                <attributedString key="attributedText">
-                                    <fragment content="Label">
-                                        <attributes>
-                                            <font key="NSFont" size="22" name="AndaleMono"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" firstLineHeadIndent="10" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
+                                <fontDescription key="fontDescription" name="AndaleMono" family="Andale Mono" pointSize="15"/>
+                                <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qPk-cU-DjL">
                                 <rect key="frame" x="289" y="138" width="46" height="30"/>
                                 <state key="normal" title="Button"/>
                                 <connections>
-                                    <action selector="returnCoins:" destination="BYZ-38-t0r" eventType="touchUpInside" id="U0C-51-8ud"/>
+                                    <action selector="didPressInsertCoin:" destination="BYZ-38-t0r" eventType="touchUpInside" id="V2s-Ze-urZ"/>
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="g8E-EI-niH">
@@ -117,8 +111,12 @@
                             </button>
                             <pickerView contentMode="scaleToFill" verticalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="CDg-xf-gY5">
                                 <rect key="frame" x="0.0" y="533" width="375" height="90"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="ddf-Zi-60q"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="Qec-J2-ArJ"/>
+                                </connections>
                             </pickerView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Output:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SRV-tw-gax">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OUTPUT:" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SRV-tw-gax">
                                 <rect key="frame" x="40" y="420" width="295" height="55"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
@@ -185,6 +183,7 @@
                         <outlet property="candyImage" destination="ol6-vz-vGc" id="gru-RH-a1L"/>
                         <outlet property="chipsButton" destination="79Q-sV-vJU" id="pY3-VU-SLe"/>
                         <outlet property="chipsImage" destination="P2s-br-uaj" id="bLZ-Br-lej"/>
+                        <outlet property="coinPicker" destination="CDg-xf-gY5" id="Vzq-zn-gy7"/>
                         <outlet property="cokeButton" destination="2gd-UL-rIw" id="rEi-Nj-bhd"/>
                         <outlet property="cokeImage" destination="GDF-E2-I9o" id="gzM-VF-6gO"/>
                         <outlet property="getBalanceButton" destination="UXU-bD-Awr" id="wBh-65-mEJ"/>

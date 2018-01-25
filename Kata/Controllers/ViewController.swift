@@ -16,15 +16,38 @@ class ViewController: UIViewController {
   @IBOutlet weak var candyImage: UIImageView!
   @IBOutlet weak var insertCoinButton: UIButton!
   @IBOutlet weak var getBalanceButton: UIButton!
+  @IBOutlet weak var coinPicker: UIPickerView!
+  
+  
+  let defaultMessage = "INSERT COIN"
+  let secondMessage = "EXACT CHANGE ONLY"
+  
  
+  @IBAction func didPressInsertCoin(_ sender: Any) {
+    coinPicker.isHidden = coinPicker.isHidden ? false : true
+  }
   
-  let defaultMessage = "Welcome"
-  
-  @IBAction func returnCoins(_ sender: Any) {
-    
+  func checkChange() {
+    do {
+      _ = try Machine.makeChange(value: 1)
+      mainScreen.text = defaultMessage
+    } catch {
+      mainScreen.text = secondMessage
+    }
   }
   
   @IBAction func didPressGetBalance(_ sender: Any) {
+    do {
+      let changeTray = try Machine.makeChange(value: Machine.stack.double(forKey: Machine.balanceKey))
+      displayOutput(elements: changeTray)
+      checkChange()
+    } catch {
+      screenState(message: "UNABLE TO RETURN CHANGE")
+    }
+  }
+  
+  @objc func didTapOutput(sender:UITapGestureRecognizer) {
+    output.text = "OUTPUT: "
   }
   
   @IBAction func didPressChips(_ sender: Any) {
@@ -52,6 +75,10 @@ class ViewController: UIViewController {
     candyButton.setTitle("Candy", for: .normal)
     insertCoinButton.setTitle("Insert coin", for: .normal)
     getBalanceButton.setTitle("Get balance", for: .normal)
+    coinPicker.isHidden = true
+    let tapAction = UITapGestureRecognizer(target: self, action: #selector(didTapOutput))
+    output.isUserInteractionEnabled = true
+    output.addGestureRecognizer(tapAction)
   }
   
   override func viewDidLoad() {
@@ -67,42 +94,25 @@ class ViewController: UIViewController {
     mainScreen.text = message
     let when = DispatchTime.now() + 2
     DispatchQueue.main.asyncAfter(deadline: when) {
-      self.mainScreen.text = "Balance: \(Machine.getBalance(key: Machine.balanceKey))"
+      self.mainScreen.text = "BALANCE: \(Machine.getBalance(key: Machine.balanceKey))"
+    }
+  }
+  
+  func displayOutput(elements: [Double]) {
+    output.text = "OUTPUT: "
+    for element in elements {
+      output.text = "\(output.text) \(element),"
     }
   }
   
   func didPressProduct(product: Product){
-    
-    func setTray(tray: [String: Any]) {
-      var copyTray = tray
-      switch product {
-      case .Candy:
-        copyTray["Candy"] = 1
-      case .Chips:
-        copyTray["Chips"] = 1
-      case .Coke:
-        copyTray["Coke"] = 1
-      }
-      Machine.stack.set(copyTray, forKey: Machine.trayKey)
-      output.text = "Current output: \(Machine.stack.object(forKey: Machine.trayKey) as! [String: Any])"
-    }
-    
-    func displayOutput(elements: [String: Any]) {
-      output.text = "Output: "
-      for element in elements {
-        output.text = "\(output.text) \(element)"
-      }
-    }
-    
+
     do {
-        if try Machine.giveProduct(product: product) {
-          let newBalance = Machine.getBalance(key: Machine.balanceKey) - Product.Coke.rawValue
+      if try Machine.giveProduct(product: product) {
+          let newBalance = Machine.getBalance(key: Machine.balanceKey) - product.rawValue
           Machine.stack.set(newBalance, forKey: Machine.balanceKey)
-          if let newTray: [String: Any] = Machine.stack.object(forKey: Machine.trayKey) as? [String: Any] {
-            setTray(tray: newTray)
-          } else {
-            setTray(tray: [:])
-          }
+          screenState(message: "THANKS")
+          output.text = "OUTPUT: \(product.stringValue)"
       }
     } catch VendingMachineError.outOfStock {
         screenState(message: "Out of stock")
@@ -115,5 +125,35 @@ class ViewController: UIViewController {
     }
   }
   
+}
+
+extension ViewController: UIPickerViewDataSource {
+  func numberOfComponents(in pickerView: UIPickerView) -> Int {
+      return 1
+  }
+  
+  func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    return Coin.count.hashValue
+  }
+  
+  func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    return Coin(rawValue: row)?.description
+  }
+  
+}
+
+extension ViewController: UIPickerViewDelegate {
+  func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    coinPicker.isHidden = coinPicker.isHidden ? false : true
+    do {
+      let coin = Coin(rawValue: row)
+      try Machine.insertCoin(coin: coin!)
+      screenState(message: "INSERTED: \(coin!.value)")
+    } catch VendingMachineError.invalidCoin {
+      screenState(message: "INVALID COIN")
+    } catch {
+      screenState(message: "THERE WAS AN ERROR")
+    }
+  }
 }
 

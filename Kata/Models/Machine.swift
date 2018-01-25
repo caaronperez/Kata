@@ -32,9 +32,9 @@ struct Machine {
   static func insertCoin(coin: Coin) throws {
     var balance = getBalance(key: balanceKey)
     if coin != .Penny {
-      balance += coin.rawValue
+      balance += coin.value
       var newStack = getStack(key: stackKey)
-      newStack.append(coin.rawValue)
+      newStack.append(coin.value)
       newStack.sort(by: { $0 > $1})
       stack.set(newStack, forKey: stackKey)
       stack.set(balance, forKey: balanceKey)
@@ -55,16 +55,19 @@ struct Machine {
     var stack = getStack(key: Machine.stackKey)
     
     for coin in stack {
-      if valueCopy - coin >= 0 {
+      
+      if (round(100*valueCopy)/100) - coin >= 0 {
         result.append(coin)
         valueCopy -= coin
         stack.removeFirst()
-      } else {
+      }
+      
+      if valueCopy == 0 {
         break
       }
     }
     
-    if valueCopy != 0 {
+    if (round(100*valueCopy)/100) != 0 {
       throw VendingMachineError.insufficientFunds(valueNeeded: value)
     } else {
       updateBalance(value: stack)
@@ -73,27 +76,16 @@ struct Machine {
   }
   
   static func checkStock(product: String, products: [String: Int]) throws -> Bool{
+    var productsCopy = products
     if let stock = products[product] {
       if stock > 0 {
+        let newValue = stock - 1
+        productsCopy[product] = newValue
+        stack.set(productsCopy, forKey: productsKey)
         return true
       } else { throw VendingMachineError.outOfStock }
     } else {
       throw VendingMachineError.invalidSelection
-    }
-  }
-  
-  static func getCoins() throws{
-    if var newTray: [String: Any] = stack.object(forKey: trayKey) as? [String: Any] {
-      if var changeTray = newTray["Change"] as? [Double] {
-        changeTray += try makeChange(value: stack.double(forKey: balanceKey))
-        newTray["Change"] = changeTray
-        stack.set(newTray, forKey: trayKey)
-      }
-    } else {
-        let changeTray = try makeChange(value: stack.double(forKey: balanceKey))
-        var newTray: [String: Any] = [:]
-        newTray["Change"] = changeTray
-        stack.set(newTray, forKey: trayKey)
     }
   }
   

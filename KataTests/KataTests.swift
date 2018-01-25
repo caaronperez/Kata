@@ -23,7 +23,7 @@ class KataTests: XCTestCase {
       let coinInserted = Coin.Quarter
       try Machine.insertCoin(coin: coinInserted)
       let lastCoin = Machine.getStack(key: Machine.stackKey).first
-      XCTAssertEqual(lastCoin, coinInserted.rawValue)
+      XCTAssertEqual(lastCoin, coinInserted.value)
     } //It accept coins and are appended to the default user
   
     func testRejectCoins() {
@@ -58,16 +58,6 @@ class KataTests: XCTestCase {
       let stack = Machine.getStack(key: Machine.stackKey)
       XCTAssert(balance != stack.last)
     } //Check the balance on the user default and sum all
-  
-    func testReturnCoins() {
-      do {
-        try Machine.getCoins()
-      } catch VendingMachineError.insufficientFunds( _) {
-        XCTFail()
-      } catch {
-        XCTFail()
-      }
-    }
   
     func testGetProduct() {
       do {
