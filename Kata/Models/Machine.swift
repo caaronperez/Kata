@@ -72,6 +72,7 @@ struct Machine {
     } else {
       updateBalance(value: stack)
     }
+    
     return result
   }
   

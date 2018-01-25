@@ -21,9 +21,10 @@ class KataTests: XCTestCase {
     
     func testAceptCoins() throws {
       let coinInserted = Coin.Quarter
+      let previousBalance = Machine.getBalance(key: Machine.balanceKey)
       try Machine.insertCoin(coin: coinInserted)
-      let lastCoin = Machine.getStack(key: Machine.stackKey).first
-      XCTAssertEqual(lastCoin, coinInserted.value)
+      let newBalance = Machine.getBalance(key: Machine.balanceKey)
+      XCTAssertEqual(previousBalance, newBalance - coinInserted.value)
     } //It accept coins and are appended to the default user
   
     func testRejectCoins() {
@@ -36,7 +37,7 @@ class KataTests: XCTestCase {
     } //It doesn't accept pennys so it have to be appended to the change
   
     func testThrowIncompleteChange() throws{
-      let change = 200.0
+      let change = 200000.0
       XCTAssertThrowsError(try Machine.makeChange(value: change)) { error in
         guard case VendingMachineError.insufficientFunds(let value) = error else {
           return XCTFail()
@@ -47,22 +48,25 @@ class KataTests: XCTestCase {
   
     func testThrowCompleteChange() throws {
       //let changeRequired = Machine.checkBalance(key: Machine.balanceKey)
-      let changeRequired = 0.2
+      let changeRequired = 0.25
       let change = try Machine.makeChange(value: changeRequired)
       let totalChange = change.reduce(0, {$0 + $1})
       XCTAssertEqual(totalChange, changeRequired)
     }
   
-    func testCheckBalance() {
+    func testCheckBalance() throws {
+      let coin = Coin.Dimme
+      try Machine.insertCoin(coin: coin)
       let balance = Machine.getBalance(key: Machine.balanceKey)
-      let stack = Machine.getStack(key: Machine.stackKey)
-      XCTAssert(balance != stack.last)
+      XCTAssert(balance >= coin.value)
     } //Check the balance on the user default and sum all
   
     func testGetProduct() {
       do {
-        if try Machine.giveProduct(product: .Candy) {
-          XCTAssertTrue(true, "Gracias por su compra")
+        try Machine.insertCoin(coin: .Quarter)
+        try Machine.insertCoin(coin: .Quarter)
+        if try Machine.giveProduct(product: .Chips) {
+          XCTAssert(true, "Correct")
         }
       } catch VendingMachineError.insufficientFunds(let value) {
         XCTFail("Not enough balance for this product: \(value)")

@@ -79,6 +79,11 @@ class ViewController: UIViewController {
     let tapAction = UITapGestureRecognizer(target: self, action: #selector(didTapOutput))
     output.isUserInteractionEnabled = true
     output.addGestureRecognizer(tapAction)
+    checkChange()
+    if Machine.stack.object(forKey: Machine.productsKey) as? [String: Int] == nil {
+      Machine.stack.set(["Coke": 20, "Chips": 30, "Candy": 10], forKey: Machine.productsKey)
+    }
+    
   }
   
   override func viewDidLoad() {
@@ -99,9 +104,10 @@ class ViewController: UIViewController {
   }
   
   func displayOutput(elements: [Double]) {
-    output.text = "OUTPUT: "
     for element in elements {
-      output.text = "\(output.text) \(element),"
+      if let e = output.text {
+        output.text = "\(e) \(element)"
+      }
     }
   }
   
@@ -112,16 +118,18 @@ class ViewController: UIViewController {
           let newBalance = Machine.getBalance(key: Machine.balanceKey) - product.rawValue
           Machine.stack.set(newBalance, forKey: Machine.balanceKey)
           screenState(message: "THANKS")
-          output.text = "OUTPUT: \(product.stringValue)"
+          if let out = output.text {
+            output.text = "\(out) \(product.stringValue)"
+          }
       }
     } catch VendingMachineError.outOfStock {
-        screenState(message: "Out of stock")
+        screenState(message: "OUT OF STOCK")
     } catch VendingMachineError.insufficientFunds(let value) {
-        screenState(message: "Insufficient balance. Required: \(value)")
+        screenState(message: "INSUFFICIENT BALANCE. REQUIRED: \(value)")
     } catch VendingMachineError.invalidSelection {
-        screenState(message: "Invalid selection")
+        screenState(message: "INVALID SELECTION")
     } catch {
-        screenState(message: "There was an error")
+        screenState(message: "THERE WAS AN ERROR")
     }
   }
   
@@ -151,6 +159,9 @@ extension ViewController: UIPickerViewDelegate {
       screenState(message: "INSERTED: \(coin!.value)")
     } catch VendingMachineError.invalidCoin {
       screenState(message: "INVALID COIN")
+      if let out = output.text {
+        output.text = "\(out) 0.1"
+      }
     } catch {
       screenState(message: "THERE WAS AN ERROR")
     }

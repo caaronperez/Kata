@@ -15,3 +15,7 @@ Run tests:
 
 Step 1: In the Xcode console go to the test tab on the left side or open the .swift located on the KataTests folder
 Step 2: Execute the test on the play icons at the left side of the code
+
+
+How to insert a coin
+How to get your product or change
